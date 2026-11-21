@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://cs5sd2ie7wmqf"]
+
+[ext_resource type="Script" uid="uid://lxy10eqpmpm8" path="res://scripts/enemy/enemy.gd" id="1_enemy"]
+[ext_resource type="Script" uid="uid://c2kf1hs2nsg8g" path="res://scripts/health_component.gd" id="2_health"]
+[ext_resource type="Script" uid="uid://47ivf8jhswdg" path="res://scripts/hurtbox_component.gd" id="3_hurt"]
+[ext_resource type="Script" uid="uid://b544m3rdcisg6" path="res://scripts/enemy/health_bar_3d.gd" id="4_bar"]
+[ext_resource type="Script" uid="uid://cmls5rnutpmbm" path="res://scripts/enemy/state_machine.gd" id="5_sm"]
+[ext_resource type="Script" uid="uid://c3n1qo3bv0qnv" path="res://scripts/enemy/enemy_idle_state.gd" id="6_idle"]
+[ext_resource type="Script" uid="uid://57hna1dre50o" path="res://scripts/enemy/enemy_roam_state.gd" id="7_roam"]
+[ext_resource type="Script" uid="uid://cswfn3rcy8vsw" path="res://scripts/enemy/enemy_chase_state.gd" id="8_chase"]
+[ext_resource type="Script" uid="uid://rx1717eeqkhw" path="res://scripts/enemy/enemy_attack_state.gd" id="9_attack"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ig7tw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
+
+[node name="Enemy" type="CharacterBody3D" unique_id=1668202450]
+collision_layer = 4
+script = ExtResource("1_enemy")
+
+[node name="BodyShape" type="CollisionShape3D" parent="." unique_id=1423722277]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.025145, 0)
+shape = SubResource("BoxShape3D_ig7tw")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="." unique_id=49847510]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0187912, 0)
+mesh = SubResource("BoxMesh_0xm2m")
+
+[node name="HealthComponent" type="Node" parent="." unique_id=1685472326]
+unique_name_in_owner = true
+script = ExtResource("2_health")
+
+[node name="HurtboxComponent" type="Area3D" parent="." unique_id=901508359]
+unique_name_in_owner = true
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("3_hurt")
+
+[node name="HurtboxShape" type="CollisionShape3D" parent="HurtboxComponent" unique_id=473364533]
+unique_name_in_owner = true
+
+[node name="HealthBar" type="Node3D" parent="." unique_id=582055826]
+unique_name_in_owner = true
+script = ExtResource("4_bar")
+
+[node name="StateMachine" type="Node" parent="." unique_id=199227609]
+unique_name_in_owner = true
+script = ExtResource("5_sm")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=814671795]
+script = ExtResource("6_idle")
+
+[node name="Roam" type="Node" parent="StateMachine" unique_id=1531507468]
+script = ExtResource("7_roam")
+
+[node name="Chase" type="Node" parent="StateMachine" unique_id=2012238009]
+script = ExtResource("8_chase")
+
+[node name="Attack" type="Node" parent="StateMachine" unique_id=1769145298]
+script = ExtResource("9_attack")

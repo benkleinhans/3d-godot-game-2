@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://nudwnypiad2g"]
+
+[ext_resource type="Script" uid="uid://ch2a8qfhi2fbm" path="res://scripts/player.gd" id="1_player"]
+[ext_resource type="PackedScene" uid="uid://chuyaf1n14fn8" path="res://Assets/untitled.fbx" id="2_nd3yq"]
+[ext_resource type="Script" uid="uid://cmbgeayurn55e" path="res://scripts/animation_component.gd" id="s_animation_component"]
+[ext_resource type="Script" uid="uid://sw6epgu2ncw1" path="res://scripts/camera_component.gd" id="s_camera_component"]
+[ext_resource type="Script" uid="uid://dnmx8etpgu218" path="res://scripts/glow_component.gd" id="s_glow_component"]
+[ext_resource type="Script" uid="uid://c2kf1hs2nsg8g" path="res://scripts/health_component.gd" id="s_health_component"]
+[ext_resource type="Script" uid="uid://bvxtgfpw8kqbv" path="res://scripts/hitbox_component.gd" id="s_hitbox_component"]
+[ext_resource type="Script" uid="uid://47ivf8jhswdg" path="res://scripts/hurtbox_component.gd" id="s_hurtbox_component"]
+[ext_resource type="Script" uid="uid://cpl8ehvbserui" path="res://scripts/ik_component.gd" id="s_ik_component"]
+[ext_resource type="Script" uid="uid://c0eqkmq1ycn4" path="res://scripts/input_component.gd" id="s_input_component"]
+[ext_resource type="Script" uid="uid://ceol8clxirai4" path="res://scripts/lock_on_component.gd" id="s_lock_on_component"]
+[ext_resource type="Script" uid="uid://bqkbt2trb12x6" path="res://scripts/movement_component.gd" id="s_movement_component"]
+[ext_resource type="Script" uid="uid://d0xm5xwhrsncj" path="res://scripts/weapon_component.gd" id="s_weapon_component"]
+
+[sub_resource type="CapsuleShape3D" id="Caps_body"]
+radius = 0.3
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="Caps_hurt"]
+radius = 0.35
+height = 1.85
+
+[sub_resource type="SphereShape3D" id="Sph_cam"]
+radius = 0.25
+
+[node name="Player" type="CharacterBody3D" unique_id=631929535]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1217405683]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Caps_body")
+
+[node name="ModelPivot" type="Node3D" parent="." unique_id=754904306]
+unique_name_in_owner = true
+
+[node name="Mannequin" parent="ModelPivot" unique_id=1014601375 instance=ExtResource("2_nd3yq")]
+
+[node name="Hitbox" type="Area3D" parent="ModelPivot" unique_id=1130595455]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("s_hitbox_component")
+
+[node name="Hurtbox" type="Area3D" parent="." unique_id=854047025]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("s_hurtbox_component")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox" unique_id=441178471]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("Caps_hurt")
+
+[node name="InputComponent" type="Node" parent="." unique_id=1529308390]
+unique_name_in_owner = true
+script = ExtResource("s_input_component")
+
+[node name="MovementComponent" type="Node" parent="." unique_id=1505604997]
+unique_name_in_owner = true
+script = ExtResource("s_movement_component")
+
+[node name="HealthComponent" type="Node" parent="." unique_id=618592801]
+unique_name_in_owner = true
+script = ExtResource("s_health_component")
+
+[node name="LockOnComponent" type="Node" parent="." unique_id=66903577]
+unique_name_in_owner = true
+script = ExtResource("s_lock_on_component")
+
+[node name="WeaponComponent" type="Node" parent="." unique_id=1028646514]
+unique_name_in_owner = true
+script = ExtResource("s_weapon_component")
+launcher_cooldown = 5.0
+
+[node name="AnimationComponent" type="Node" parent="." unique_id=721421645]
+unique_name_in_owner = true
+script = ExtResource("s_animation_component")
+
+[node name="IKComponent" type="Node" parent="." unique_id=291535302]
+unique_name_in_owner = true
+script = ExtResource("s_ik_component")
+
+[node name="GlowComponent" type="Node" parent="." unique_id=540676450]
+unique_name_in_owner = true
+script = ExtResource("s_glow_component")
+
+[node name="CameraComponent" type="Node3D" parent="." unique_id=1280336335]
+unique_name_in_owner = true
+script = ExtResource("s_camera_component")
+
+[node name="CameraPitch" type="Node3D" parent="CameraComponent" unique_id=1741351342]
+unique_name_in_owner = true
+
+[node name="SpringArm" type="SpringArm3D" parent="CameraComponent/CameraPitch" unique_id=1946873303]
+unique_name_in_owner = true
+shape = SubResource("Sph_cam")
+spring_length = 4.0
+margin = 0.1
+
+[node name="Camera3D" type="Camera3D" parent="CameraComponent/CameraPitch/SpringArm" unique_id=893631056]
+unique_name_in_owner = true
